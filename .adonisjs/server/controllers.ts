@@ -4,6 +4,15 @@
  */
 
 export const controllers = {
+  Card: () => import('#controllers/card_controller'),
+  CheckIns: () => import('#controllers/check_ins_controller'),
+  Dashboard: () => import('#controllers/dashboard_controller'),
+  EmailSettings: () => import('#controllers/email_settings_controller'),
+  Events: () => import('#controllers/events_controller'),
+  Guests: () => import('#controllers/guests_controller'),
+  Invitations: () => import('#controllers/invitations_controller'),
+  Invite: () => import('#controllers/invite_controller'),
   NewAccount: () => import('#controllers/new_account_controller'),
+  Pages: () => import('#controllers/pages_controller'),
   Session: () => import('#controllers/session_controller'),
 }

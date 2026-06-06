@@ -11,8 +11,15 @@ declare module '@adonisjs/inertia/types' {
   export interface InertiaPages {
     'auth/login': ExtractProps<(typeof import('../../inertia/pages/auth/login.vue'))['default']>
     'auth/signup': ExtractProps<(typeof import('../../inertia/pages/auth/signup.vue'))['default']>
+    'checkins/scan': ExtractProps<(typeof import('../../inertia/pages/checkins/scan.vue'))['default']>
+    'dashboard/index': ExtractProps<(typeof import('../../inertia/pages/dashboard/index.vue'))['default']>
     'errors/not_found': ExtractProps<(typeof import('../../inertia/pages/errors/not_found.vue'))['default']>
     'errors/server_error': ExtractProps<(typeof import('../../inertia/pages/errors/server_error.vue'))['default']>
+    'events/card_designer': ExtractProps<(typeof import('../../inertia/pages/events/card_designer.vue'))['default']>
+    'events/create': ExtractProps<(typeof import('../../inertia/pages/events/create.vue'))['default']>
+    'events/edit': ExtractProps<(typeof import('../../inertia/pages/events/edit.vue'))['default']>
+    'events/show': ExtractProps<(typeof import('../../inertia/pages/events/show.vue'))['default']>
     'home': ExtractProps<(typeof import('../../inertia/pages/home.vue'))['default']>
+    'settings/email': ExtractProps<(typeof import('../../inertia/pages/settings/email.vue'))['default']>
   }
 }

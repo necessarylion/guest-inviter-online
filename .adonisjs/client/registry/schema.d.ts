@@ -15,8 +15,56 @@ export interface Registry {
       paramsTuple: []
       params: {}
       query: {}
-      response: unknown
-      errorResponse: unknown
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['home']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['home']>>>
+    }
+  }
+  'pages.robots': {
+    methods: ["GET","HEAD"]
+    pattern: '/robots.txt'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['robots']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['robots']>>>
+    }
+  }
+  'pages.sitemap': {
+    methods: ["GET","HEAD"]
+    pattern: '/sitemap.xml'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['sitemap']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/pages_controller').default['sitemap']>>>
+    }
+  }
+  'invite.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/i/:token'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { token: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/invite_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/invite_controller').default['show']>>>
+    }
+  }
+  'invite.rsvp': {
+    methods: ["POST"]
+    pattern: '/i/:token/rsvp'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/guest').rsvpValidator)>>
+      paramsTuple: [ParamValue]
+      params: { token: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/guest').rsvpValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/invite_controller').default['rsvp']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/invite_controller').default['rsvp']>>> | { status: 422; response: { errors: SimpleError[] } }
     }
   }
   'new_account.create': {
@@ -77,6 +125,270 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/session_controller').default['destroy']>>>
+    }
+  }
+  'dashboard': {
+    methods: ["GET","HEAD"]
+    pattern: '/dashboard'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['index']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/dashboard_controller').default['index']>>>
+    }
+  }
+  'events.create': {
+    methods: ["GET","HEAD"]
+    pattern: '/events/create'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/events_controller').default['create']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/events_controller').default['create']>>>
+    }
+  }
+  'events.store': {
+    methods: ["POST"]
+    pattern: '/events'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/event').createEventValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/event').createEventValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/events_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/events_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'events.show': {
+    methods: ["GET","HEAD"]
+    pattern: '/events/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/events_controller').default['show']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/events_controller').default['show']>>>
+    }
+  }
+  'events.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/events/:id/edit'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/events_controller').default['edit']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/events_controller').default['edit']>>>
+    }
+  }
+  'events.update': {
+    methods: ["PUT"]
+    pattern: '/events/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/event').updateEventValidator)>>
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/event').updateEventValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/events_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/events_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'events.destroy': {
+    methods: ["DELETE"]
+    pattern: '/events/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/events_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/events_controller').default['destroy']>>>
+    }
+  }
+  'guests.store': {
+    methods: ["POST"]
+    pattern: '/events/:eventId/guests'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/guest').createGuestValidator)>>
+      paramsTuple: [ParamValue]
+      params: { eventId: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/guest').createGuestValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/guests_controller').default['store']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/guests_controller').default['store']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'guests.bulk': {
+    methods: ["POST"]
+    pattern: '/events/:eventId/guests/bulk'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/guest').bulkGuestsValidator)>>
+      paramsTuple: [ParamValue]
+      params: { eventId: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/guest').bulkGuestsValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/guests_controller').default['bulkStore']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/guests_controller').default['bulkStore']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'guests.update': {
+    methods: ["PUT"]
+    pattern: '/events/:eventId/guests/:id'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/guest').updateGuestValidator)>>
+      paramsTuple: [ParamValue, ParamValue]
+      params: { eventId: ParamValue; id: ParamValue }
+      query: ExtractQuery<InferInput<(typeof import('#validators/guest').updateGuestValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/guests_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/guests_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'guests.destroy': {
+    methods: ["DELETE"]
+    pattern: '/events/:eventId/guests/:id'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { eventId: ParamValue; id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/guests_controller').default['destroy']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/guests_controller').default['destroy']>>>
+    }
+  }
+  'invitations.email': {
+    methods: ["POST"]
+    pattern: '/events/:eventId/guests/:guestId/email'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { eventId: ParamValue; guestId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/invitations_controller').default['email']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/invitations_controller').default['email']>>>
+    }
+  }
+  'invitations.emailAll': {
+    methods: ["POST"]
+    pattern: '/events/:eventId/invitations/email-all'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { eventId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/invitations_controller').default['emailAll']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/invitations_controller').default['emailAll']>>>
+    }
+  }
+  'checkins.scan': {
+    methods: ["GET","HEAD"]
+    pattern: '/events/:eventId/scan'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { eventId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/check_ins_controller').default['scan']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/check_ins_controller').default['scan']>>>
+    }
+  }
+  'checkins.verify': {
+    methods: ["POST"]
+    pattern: '/events/:eventId/check-in'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { eventId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/check_ins_controller').default['verify']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/check_ins_controller').default['verify']>>>
+    }
+  }
+  'cards.design': {
+    methods: ["GET","HEAD"]
+    pattern: '/events/:eventId/card'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { eventId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/card_controller').default['design']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/card_controller').default['design']>>>
+    }
+  }
+  'cards.save': {
+    methods: ["PUT"]
+    pattern: '/events/:eventId/card'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { eventId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/card_controller').default['save']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/card_controller').default['save']>>>
+    }
+  }
+  'cards.generate': {
+    methods: ["GET","HEAD"]
+    pattern: '/events/:eventId/guests/:guestId/card.pdf'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { eventId: ParamValue; guestId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/card_controller').default['generate']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/card_controller').default['generate']>>>
+    }
+  }
+  'cards.email': {
+    methods: ["POST"]
+    pattern: '/events/:eventId/guests/:guestId/card/email'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { eventId: ParamValue; guestId: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/card_controller').default['emailCard']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/card_controller').default['emailCard']>>>
+    }
+  }
+  'email_settings.edit': {
+    methods: ["GET","HEAD"]
+    pattern: '/settings/email'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/email_settings_controller').default['edit']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/email_settings_controller').default['edit']>>>
+    }
+  }
+  'email_settings.update': {
+    methods: ["PUT"]
+    pattern: '/settings/email'
+    types: {
+      body: ExtractBody<InferInput<(typeof import('#validators/email_setting').emailSettingValidator)>>
+      paramsTuple: []
+      params: {}
+      query: ExtractQuery<InferInput<(typeof import('#validators/email_setting').emailSettingValidator)>>
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/email_settings_controller').default['update']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/email_settings_controller').default['update']>>> | { status: 422; response: { errors: SimpleError[] } }
+    }
+  }
+  'email_settings.test': {
+    methods: ["POST"]
+    pattern: '/settings/email/test'
+    types: {
+      body: {}
+      paramsTuple: []
+      params: {}
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/email_settings_controller').default['test']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/email_settings_controller').default['test']>>>
     }
   }
 }

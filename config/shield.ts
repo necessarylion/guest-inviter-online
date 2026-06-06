@@ -1,3 +1,4 @@
+import app from '@adonisjs/core/services/app'
 import { defineConfig } from '@adonisjs/shield'
 
 const shieldConfig = defineConfig({
@@ -29,8 +30,9 @@ const shieldConfig = defineConfig({
   csrf: {
     /**
      * Enable CSRF token verification for state-changing requests.
+     * Disabled under tests so the Japa API client can post without a token.
      */
-    enabled: true,
+    enabled: !app.inTest,
 
     /**
      * Route patterns to exclude from CSRF checks.

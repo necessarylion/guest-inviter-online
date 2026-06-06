@@ -15,10 +15,10 @@ watch(
 watch(
   () => page.props.flash,
   (flashMessages) => {
-    if (flashMessages.error) {
+    if (flashMessages?.error) {
       toast.error(flashMessages.error)
     }
-    if (flashMessages.success) {
+    if (flashMessages?.success) {
       toast.success(flashMessages.success)
     }
   },
@@ -29,8 +29,8 @@ watch(
 <template>
   <header>
     <div>
-      <div>
-        <Link route="home">
+      <div class="brand-row">
+        <a :href="page.props.user ? '/dashboard' : '/'" aria-label="Event Inviter">
           <svg
             width="66"
             height="24"
@@ -43,14 +43,21 @@ watch(
               fill="currentColor"
             />
           </svg>
-        </Link>
+        </a>
+
+        <nav v-if="page.props.user" class="portal-nav">
+          <Link route="dashboard">Events</Link>
+          <Link route="email_settings.edit">Email</Link>
+        </nav>
       </div>
+
       <div>
         <nav>
           <template v-if="page.props.user">
-            <span>{{ page.props.user.initials }}</span>
+            <Link route="events.create">New event</Link>
+            <span class="muted">{{ page.props.user.initials }}</span>
             <Form route="session.destroy">
-              <button type="submit">Logout</button>
+              <button type="submit" class="btn-secondary btn-sm" style="width: auto">Logout</button>
             </Form>
           </template>
           <template v-else>

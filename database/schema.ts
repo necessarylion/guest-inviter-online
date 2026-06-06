@@ -7,6 +7,198 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
+export class CardTemplateSchema extends BaseModel {
+  static $columns = [
+    'createdAt',
+    'designJson',
+    'eventId',
+    'height',
+    'id',
+    'name',
+    'updatedAt',
+    'width',
+  ] as const
+  $columns = CardTemplateSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare designJson: any
+  @column()
+  declare eventId: number
+  @column()
+  declare height: number
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare width: number
+}
+
+export class EmailSettingSchema extends BaseModel {
+  static $columns = [
+    'createdAt',
+    'credentials',
+    'fromEmail',
+    'fromName',
+    'id',
+    'isVerified',
+    'lastTestedAt',
+    'provider',
+    'updatedAt',
+    'userId',
+  ] as const
+  $columns = EmailSettingSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare credentials: string
+  @column()
+  declare fromEmail: string
+  @column()
+  declare fromName: string | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare isVerified: boolean
+  @column.dateTime()
+  declare lastTestedAt: DateTime | null
+  @column()
+  declare provider: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userId: number
+}
+
+export class EventSchema extends BaseModel {
+  static $columns = [
+    'allowPublicRsvp',
+    'coverImageUrl',
+    'createdAt',
+    'description',
+    'endsAt',
+    'id',
+    'location',
+    'slug',
+    'startsAt',
+    'status',
+    'timezone',
+    'title',
+    'updatedAt',
+    'userId',
+    'venueAddress',
+  ] as const
+  $columns = EventSchema.$columns
+  @column()
+  declare allowPublicRsvp: boolean
+  @column()
+  declare coverImageUrl: string | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare description: string | null
+  @column.dateTime()
+  declare endsAt: DateTime | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare location: string | null
+  @column()
+  declare slug: string
+  @column.dateTime()
+  declare startsAt: DateTime
+  @column()
+  declare status: string
+  @column()
+  declare timezone: string
+  @column()
+  declare title: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userId: number
+  @column()
+  declare venueAddress: string | null
+}
+
+export class GuestSchema extends BaseModel {
+  static $columns = [
+    'checkedInAt',
+    'checkedInById',
+    'createdAt',
+    'email',
+    'eventId',
+    'id',
+    'name',
+    'phone',
+    'rsvpStatus',
+    'updatedAt',
+  ] as const
+  $columns = GuestSchema.$columns
+  @column.dateTime()
+  declare checkedInAt: DateTime | null
+  @column()
+  declare checkedInById: number | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare email: string | null
+  @column()
+  declare eventId: number
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare name: string
+  @column()
+  declare phone: string | null
+  @column()
+  declare rsvpStatus: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+}
+
+export class InvitationSchema extends BaseModel {
+  static $columns = [
+    'createdAt',
+    'eventId',
+    'guestId',
+    'id',
+    'method',
+    'scannedAt',
+    'sentAt',
+    'status',
+    'token',
+    'updatedAt',
+    'viewedAt',
+  ] as const
+  $columns = InvitationSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare eventId: number
+  @column()
+  declare guestId: number
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare method: string
+  @column.dateTime()
+  declare scannedAt: DateTime | null
+  @column.dateTime()
+  declare sentAt: DateTime | null
+  @column()
+  declare status: string
+  @column()
+  declare token: string
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column.dateTime()
+  declare viewedAt: DateTime | null
+}
+
 export class UserSchema extends BaseModel {
   static $columns = ['createdAt', 'email', 'fullName', 'id', 'password', 'updatedAt'] as const
   $columns = UserSchema.$columns

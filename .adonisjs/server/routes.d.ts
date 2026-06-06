@@ -5,26 +5,93 @@ type ParamValue = string | number | bigint | boolean
 export type ScannedRoutes = {
   ALL: {
     'home': { paramsTuple?: []; params?: {} }
+    'pages.robots': { paramsTuple?: []; params?: {} }
+    'pages.sitemap': { paramsTuple?: []; params?: {} }
+    'invite.show': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
+    'invite.rsvp': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'new_account.store': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
+    'dashboard': { paramsTuple?: []; params?: {} }
+    'events.create': { paramsTuple?: []; params?: {} }
+    'events.store': { paramsTuple?: []; params?: {} }
+    'events.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'events.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'events.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'events.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'guests.store': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'guests.bulk': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'guests.update': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'id': ParamValue} }
+    'guests.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'id': ParamValue} }
+    'invitations.email': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'guestId': ParamValue} }
+    'invitations.emailAll': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'checkins.scan': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'checkins.verify': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'cards.design': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'cards.save': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'cards.generate': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'guestId': ParamValue} }
+    'cards.email': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'guestId': ParamValue} }
+    'email_settings.edit': { paramsTuple?: []; params?: {} }
+    'email_settings.update': { paramsTuple?: []; params?: {} }
+    'email_settings.test': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'home': { paramsTuple?: []; params?: {} }
+    'pages.robots': { paramsTuple?: []; params?: {} }
+    'pages.sitemap': { paramsTuple?: []; params?: {} }
+    'invite.show': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
+    'dashboard': { paramsTuple?: []; params?: {} }
+    'events.create': { paramsTuple?: []; params?: {} }
+    'events.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'events.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'checkins.scan': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'cards.design': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'cards.generate': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'guestId': ParamValue} }
+    'email_settings.edit': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
+    'pages.robots': { paramsTuple?: []; params?: {} }
+    'pages.sitemap': { paramsTuple?: []; params?: {} }
+    'invite.show': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
+    'dashboard': { paramsTuple?: []; params?: {} }
+    'events.create': { paramsTuple?: []; params?: {} }
+    'events.show': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'events.edit': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'checkins.scan': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'cards.design': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'cards.generate': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'guestId': ParamValue} }
+    'email_settings.edit': { paramsTuple?: []; params?: {} }
   }
   POST: {
+    'invite.rsvp': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'new_account.store': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
+    'events.store': { paramsTuple?: []; params?: {} }
+    'guests.store': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'guests.bulk': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'invitations.email': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'guestId': ParamValue} }
+    'invitations.emailAll': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'checkins.verify': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'cards.email': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'guestId': ParamValue} }
+    'email_settings.test': { paramsTuple?: []; params?: {} }
+  }
+  PUT: {
+    'events.update': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'guests.update': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'id': ParamValue} }
+    'cards.save': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'email_settings.update': { paramsTuple?: []; params?: {} }
+  }
+  DELETE: {
+    'events.destroy': { paramsTuple: [ParamValue]; params: {'id': ParamValue} }
+    'guests.destroy': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'id': ParamValue} }
   }
 }
 declare module '@adonisjs/core/types/http' {
