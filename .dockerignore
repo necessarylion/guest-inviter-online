@@ -1,0 +1,30 @@
+node_modules
+build
+tmp/*
+!tmp/.gitkeep
+.git
+.gitignore
+
+# Env / secrets
+.env
+.env.local
+.env.*.local
+
+# Compiled frontend assets (rebuilt during image build)
+public/assets
+
+# Editors / OS
+.vscode
+.idea
+.fleet
+.DS_Store
+
+# Logs
+npm-debug.log
+yarn-error.log
+*.log
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore

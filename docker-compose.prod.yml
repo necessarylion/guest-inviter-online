@@ -1,0 +1,53 @@
+# Production stack: app (built from Dockerfile) + PostgreSQL.
+#
+#   docker compose -f docker-compose.prod.yml up -d --build
+#
+# Configure secrets via a .env.production file or the shell environment.
+services:
+  app:
+    build:
+      context: .
+      target: production
+    image: event-inviter:latest
+    container_name: event_inviter_app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      TZ: ${TZ:-UTC}
+      NODE_ENV: production
+      PORT: 3333
+      HOST: 0.0.0.0
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      APP_KEY: ${APP_KEY:?APP_KEY is required}
+      APP_URL: ${APP_URL:-http://localhost:3333}
+      SESSION_DRIVER: ${SESSION_DRIVER:-cookie}
+      PM2_INSTANCES: ${PM2_INSTANCES:-1}
+      # Database — points at the postgres service on the internal network.
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+      DB_DATABASE: ${DB_DATABASE:-event_inviter}
+    ports:
+      - '${PORT:-3333}:3333'
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: event_inviter_db_prod
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+      POSTGRES_DB: ${DB_DATABASE:-event_inviter}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER:-postgres} -d ${DB_DATABASE:-event_inviter}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
