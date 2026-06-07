@@ -9,6 +9,10 @@ import { computed } from 'vue'
 const props = defineProps<{
   template: Record<string, any>
   width?: number
+  // When set, the thumbnail is scaled to fit within both `width` and
+  // `maxHeight` (preserving aspect ratio) so previews of different card
+  // proportions share a uniform footprint.
+  maxHeight?: number
   // A pre-rendered PNG (data URI) of the first page. When present it's shown
   // instead of the CSS approximation — a faithful, font-accurate thumbnail.
   image?: string | null
@@ -16,9 +20,13 @@ const props = defineProps<{
 
 const PT_TO_MM = 0.3528
 
-const W = computed(() => props.width ?? 150)
 const base = computed(() => props.template.basePdf ?? { width: 105, height: 148 })
-const scale = computed(() => W.value / base.value.width)
+const scale = computed(() => {
+  const byWidth = (props.width ?? 150) / base.value.width
+  if (props.maxHeight) return Math.min(byWidth, props.maxHeight / base.value.height)
+  return byWidth
+})
+const W = computed(() => base.value.width * scale.value)
 const H = computed(() => base.value.height * scale.value)
 const schemas = computed<any[]>(() => props.template.schemas?.[0] ?? [])
 

@@ -56,13 +56,14 @@ function destroy(preset: Preset) {
     >
       <Link
         :href="`/admin/templates/${preset.id}/edit`"
-        class="grid place-items-center border-b border-line bg-surface-2 p-4 no-underline"
+        class="grid h-60 place-items-center border-b border-line bg-surface-2 p-4 no-underline"
       >
         <div class="overflow-hidden rounded-md ring-1 ring-line">
           <CardTemplateThumb
             :template="preset.template"
             :image="preset.previewImage"
             :width="170"
+            :max-height="192"
           />
         </div>
       </Link>

@@ -101,9 +101,18 @@ function onSave(template: Template) {
             @click="applyTemplate(t)"
           >
             <div
-              class="overflow-hidden rounded-md ring-1 ring-line transition group-hover:ring-2 group-hover:ring-accent-500"
+              class="grid h-44 w-full place-items-center rounded-md transition"
             >
-              <CardTemplateThumb :template="t.template" :image="t.previewImage" :width="150" />
+              <div
+                class="overflow-hidden rounded-md ring-1 ring-line transition group-hover:ring-2 group-hover:ring-accent-500"
+              >
+                <CardTemplateThumb
+                  :template="t.template"
+                  :image="t.previewImage"
+                  :width="150"
+                  :max-height="176"
+                />
+              </div>
             </div>
             <span class="text-xs font-medium text-ink-2 group-hover:text-ink">{{ t.name }}</span>
           </button>

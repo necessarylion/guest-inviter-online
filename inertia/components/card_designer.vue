@@ -168,12 +168,48 @@ function readAsDataUrl(file: File): Promise<string> {
   })
 }
 
+// PDF page boxes are measured in points; basePdf sizes are in mm.
+const PT_TO_MM = 25.4 / 72
+
+// First-page size of a PDF, in mm — or null if it can't be read. Uses pdf-lib
+// (no worker, unlike pdfjs) and accounts for page rotation.
+async function pdfSizeMm(
+  data: ArrayBuffer | Uint8Array
+): Promise<{ width: number; height: number } | null> {
+  try {
+    const { PDFDocument } = await import('@pdfme/pdf-lib')
+    const doc = await PDFDocument.load(data)
+    const page = doc.getPage(0)
+    if (!page) return null
+    const { width, height } = page.getSize()
+    const rotated = (page.getRotation().angle / 90) % 2 !== 0
+    const w = rotated ? height : width
+    const h = rotated ? width : height
+    const round = (n: number) => Math.round(n * PT_TO_MM * 10) / 10
+    return { width: round(w), height: round(h) }
+  } catch {
+    return null
+  }
+}
+
+// A PDF base is a fixed bitmap, not a blank page we resize — mirror its real
+// dimensions in the controls as a "custom" size (don't call applySize, which
+// would replace the PDF with a blank page).
+async function reflectPdfSize(data: ArrayBuffer | Uint8Array) {
+  const size = await pdfSizeMm(data)
+  if (!size) return
+  pdfWidth.value = size.width
+  pdfHeight.value = size.height
+  preset.value = 'custom'
+}
+
 async function onReplacePdf(event: Event) {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
   if (!file) return
   try {
     setBasePdf(await readAsDataUrl(file))
+    await reflectPdfSize(await file.arrayBuffer())
     toast.success('Base PDF replaced.')
   } catch {
     toast.error('Could not read that PDF.')
@@ -282,6 +318,10 @@ onMounted(async () => {
     if (!Array.isArray(base.padding) || base.padding.some((n: number) => n !== 0)) {
       setBasePdf({ width: base.width, height: base.height, padding: NO_MARGIN })
     }
+  } else if (typeof base === 'string' && base.startsWith('data:')) {
+    // A PDF base has no blank-page size — read it off the PDF itself.
+    const res = await fetch(base)
+    reflectPdfSize(await res.arrayBuffer())
   }
 
   let snapshot = plain(designer.getTemplate())
