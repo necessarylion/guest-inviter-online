@@ -348,6 +348,33 @@
  * to our dark field tokens. Kept unlayered + !important to win over antd's
  * injected (`:where()`, zero-specificity) styles. Scoped to the panel class so
  * the rest of the app (which uses no antd) is untouched. */
+/* Base text colour + dark native form controls. Some plugin widgets (e.g. the
+ * Text plugin's "Dynamic Font Size" toggle) are raw DOM — a <label> with a
+ * native checkbox and a bare <span> that just inherits colour — so without this
+ * their text is dark-on-dark. antd controls set their own colours, so they're
+ * unaffected; `color-scheme` only restyles the native checkbox + scrollbars. */
+[data-theme='dark'] .pdfme-designer-right-sidebar {
+  color: var(--ink-2);
+  color-scheme: dark;
+}
+/* Checkbox/toggle label text is a bare <span> sibling of the antd control inside
+ * `.ant-form-item-control-input-content` (e.g. "Editable"; the Text plugin's raw
+ * "Dynamic Font Size" widget nests the same way). antd sets a dark text colour on
+ * the form wrappers below the panel container, so the container colour can't beat
+ * it — colour the control content directly. Inputs/selects set their own colour. */
+[data-theme='dark'] .pdfme-designer-right-sidebar .ant-form-item-control-input-content {
+  color: var(--ink-2) !important;
+}
+/* form-render bakes an explicit dark colour into its section titles/descriptions
+ * (e.g. `.fr-header-title { color: #000000e0 }`), so the container colour above
+ * can't reach them — override the lot. These label the collapsible groups
+ * ("Border Width", "Padding", …). */
+[data-theme='dark'] .pdfme-designer-right-sidebar :is(.fr-header-title, .fr-obj-line-title, .fr-void-title) {
+  color: var(--ink) !important;
+}
+[data-theme='dark'] .pdfme-designer-right-sidebar :is(.fr-desc, .fr-header-desc) {
+  color: var(--ink-3) !important;
+}
 [data-theme='dark'] .pdfme-designer-right-sidebar :is(.ant-input, .ant-input-number, .ant-input-number-input, .ant-input-affix-wrapper, .ant-select-selector) {
   background-color: var(--field-bg) !important;
   border-color: var(--field-border) !important;

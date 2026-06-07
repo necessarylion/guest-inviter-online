@@ -100,9 +100,7 @@ function onSave(template: Template) {
             class="group flex flex-col items-center gap-2"
             @click="applyTemplate(t)"
           >
-            <div
-              class="grid h-44 w-full place-items-center rounded-md transition"
-            >
+            <div class="grid h-44 w-full place-items-center rounded-md transition">
               <div
                 class="overflow-hidden rounded-md ring-1 ring-line transition group-hover:ring-2 group-hover:ring-accent-500"
               >
