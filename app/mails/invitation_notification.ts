@@ -37,9 +37,9 @@ export default class InvitationNotification extends BaseMail {
   private html() {
     const { event, guest, inviteUrl } = this
     const when = event.startsAt
-      ? event.startsAt.setZone(event.timezone || 'UTC').toFormat('cccc, dd LLLL yyyy • t')
+      ? event.startsAt.setZone('UTC').toFormat('cccc, dd LLLL yyyy • t')
       : ''
-    const where = [event.location, event.venueAddress].filter(Boolean).join(' — ')
+    const where = event.location ?? ''
 
     return `
     <div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#1f2937">

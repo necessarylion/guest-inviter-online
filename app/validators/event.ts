@@ -1,5 +1,4 @@
 import vine from '@vinejs/vine'
-import { EVENT_STATUSES } from '#models/event'
 
 /**
  * Accepted datetime formats: the value produced by an HTML `datetime-local`
@@ -23,12 +22,8 @@ const eventFields = {
   title: vine.string().trim().minLength(2).maxLength(150),
   description: vine.string().trim().maxLength(5000).nullable().optional(),
   location: vine.string().trim().maxLength(200).nullable().optional(),
-  venueAddress: vine.string().trim().maxLength(500).nullable().optional(),
-  coverImageUrl: vine.string().trim().url().nullable().optional(),
   startsAt: vine.date({ formats: dateFormats }),
   endsAt: vine.date({ formats: dateFormats }).nullable().optional(),
-  timezone: vine.string().trim().maxLength(60).optional(),
-  status: vine.enum(EVENT_STATUSES).optional(),
   allowPublicRsvp: vine.boolean().optional(),
 }
 

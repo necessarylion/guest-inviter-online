@@ -1,7 +1,23 @@
+import env from '#start/env'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import UserTransformer from '#transformers/user_transformer'
 import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
+
+/**
+ * Public Firebase Web SDK config, shared to the browser for Google sign-in.
+ * These values are not secrets — they identify the Firebase project to the
+ * client. `null` when sign-in is not configured, which hides the button.
+ */
+function firebaseWebConfig() {
+  const apiKey = env.get('FIREBASE_API_KEY')
+  const authDomain = env.get('FIREBASE_AUTH_DOMAIN')
+  const projectId = env.get('FIREBASE_PROJECT_ID')
+  const appId = env.get('FIREBASE_APP_ID')
+
+  if (!apiKey || !authDomain || !projectId || !appId) return null
+  return { apiKey, authDomain, projectId, appId }
+}
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   share(ctx: HttpContext) {
@@ -32,6 +48,7 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
         success,
       }),
       user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
+      firebase: ctx.inertia.always(firebaseWebConfig()),
     }
   }
 

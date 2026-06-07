@@ -6,6 +6,7 @@
  * `toolbar-start` (left) and `toolbar-extra` (right, before Save) slots.
  */
 import { Designer } from '@pdfme/ui'
+import { theme as antdTheme } from 'antd'
 import { toast } from 'vue-sonner'
 import {
   text,
@@ -24,6 +25,7 @@ import {
 import { onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import type { Template } from '@pdfme/common'
 import { UiButton } from '~/components/ui'
+import { useTheme } from '~/composables/use_theme'
 import { SIZE_PRESETS, SIZE_DIMENSIONS, DEFAULT_SIZE_PRESET } from '~/constants/card_sizes'
 
 const props = withDefaults(
@@ -42,7 +44,26 @@ const emit = defineEmits<{ save: [template: Template] }>()
 const container = ref<HTMLDivElement | null>(null)
 let designer: Designer | null = null
 
+const { isDark, accent, sync } = useTheme()
+
 const plain = (t: any): any => JSON.parse(JSON.stringify(t))
+
+/**
+ * pdfme renders its UI with Ant Design, so we hand the Designer an antd theme
+ * config: the dark/light algorithm follows the app's `data-theme`, and the
+ * primary colour is pulled from the live `--accent-500` token so the editor
+ * chrome matches the current theme + accent. Re-applied via `updateOptions`
+ * whenever either changes.
+ */
+function pdfmeTheme() {
+  const accentColor = getComputedStyle(document.documentElement)
+    .getPropertyValue('--accent-500')
+    .trim()
+  return {
+    algorithm: isDark.value ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
+    token: accentColor ? { colorPrimary: accentColor } : {},
+  }
+}
 
 /**
  * Keep the reserved fields intact after an in-designer edit. Mutates `next` and
@@ -224,10 +245,12 @@ onMounted(async () => {
   // it a plain JSON copy — the template is pure JSON data, so this is lossless.
   const template = plain(props.initialTemplate) as Template
   const font = await buildFonts()
+  // Align the theme ref with the <html data-theme> the boot script set pre-paint.
+  sync()
   designer = new Designer({
     domContainer: container.value!,
     template,
-    options: font ? { font } : {},
+    options: { ...(font ? { font } : {}), theme: pdfmeTheme() },
     plugins: {
       'Text': text,
       'Multi Variable Text': multiVariableText,
@@ -272,6 +295,11 @@ onMounted(async () => {
     }
     snapshot = plain(candidate)
   })
+})
+
+// Re-theme the live editor when the app's dark mode or accent changes.
+watch([isDark, accent], () => {
+  designer?.updateOptions({ theme: pdfmeTheme() })
 })
 
 onBeforeUnmount(() => {

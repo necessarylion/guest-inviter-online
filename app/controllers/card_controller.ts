@@ -168,7 +168,7 @@ export default class CardController {
       eventTitle: event.title,
       guestName: guest.name,
       eventDate: event.startsAt
-        ? event.startsAt.setZone(event.timezone || 'UTC').toFormat('cccc, dd LLL yyyy • t')
+        ? event.startsAt.setZone('UTC').toFormat('cccc, dd LLL yyyy • t')
         : '',
     }
   }

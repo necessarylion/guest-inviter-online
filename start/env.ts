@@ -35,6 +35,17 @@ export default await Env.create(new URL('../', import.meta.url), {
   DB_PASSWORD: Env.schema.string.optional(),
   DB_DATABASE: Env.schema.string(),
 
+  // Firebase Authentication
+  // Server (Admin SDK) — from the service account JSON. Optional so the app
+  // boots without Google sign-in configured; the route 503s until they are set.
+  FIREBASE_PROJECT_ID: Env.schema.string.optional(),
+  FIREBASE_CLIENT_EMAIL: Env.schema.string.optional(),
+  FIREBASE_PRIVATE_KEY: Env.schema.string.optional(),
+  // Client (Web SDK) — from the Firebase web app config. Shared to the browser.
+  FIREBASE_API_KEY: Env.schema.string.optional(),
+  FIREBASE_AUTH_DOMAIN: Env.schema.string.optional(),
+  FIREBASE_APP_ID: Env.schema.string.optional(),
+
   // Mail (system default mailer; users may configure their own provider in-app)
   MAIL_FROM_ADDRESS: Env.schema.string.optional(),
   MAIL_FROM_NAME: Env.schema.string.optional(),

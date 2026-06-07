@@ -43,11 +43,9 @@ export default class InviteController {
         title: event.title,
         description: event.description,
         location: event.location,
-        venueAddress: event.venueAddress,
-        coverImageUrl: event.coverImageUrl,
         allowPublicRsvp: event.allowPublicRsvp,
         when: event.startsAt
-          ? event.startsAt.setZone(event.timezone || 'UTC').toFormat('cccc, dd LLLL yyyy • t')
+          ? event.startsAt.setZone('UTC').toFormat('cccc, dd LLLL yyyy • t')
           : null,
       },
     })

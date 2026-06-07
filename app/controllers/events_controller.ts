@@ -56,10 +56,8 @@ export default class EventsController {
       event: {
         id: event.id,
         title: event.title,
-        status: event.status,
         location: event.location,
         startsAt: event.startsAt?.toISO() ?? null,
-        timezone: event.timezone,
       },
       guests,
       stats: {
@@ -83,12 +81,8 @@ export default class EventsController {
         title: event.title,
         description: event.description,
         location: event.location,
-        venueAddress: event.venueAddress,
-        coverImageUrl: event.coverImageUrl,
         startsAt: event.startsAt?.toISO() ?? null,
         endsAt: event.endsAt?.toISO() ?? null,
-        timezone: event.timezone,
-        status: event.status,
         allowPublicRsvp: event.allowPublicRsvp,
       },
     })

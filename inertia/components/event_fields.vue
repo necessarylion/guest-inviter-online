@@ -6,18 +6,14 @@
  */
 /* eslint-disable vue/no-mutating-props */
 import type { InertiaForm } from '@inertiajs/vue3'
-import { UiField, UiInput, UiTextarea, UiSelect, UiCheckbox } from '~/components/ui'
+import { UiField, UiInput, UiTextarea, UiCheckbox } from '~/components/ui'
 
 interface EventFormData {
   title: string
   description: string
   location: string
-  venueAddress: string
-  coverImageUrl: string
   startsAt: string
   endsAt: string
-  timezone: string
-  status: string
   allowPublicRsvp: boolean
 }
 
@@ -48,45 +44,14 @@ defineProps<{ form: InertiaForm<EventFormData> }>()
       </UiField>
     </div>
 
-    <div class="grid gap-[18px] sm:grid-cols-2">
-      <UiField label="Location name" for="location" optional>
-        <UiInput id="location" v-model="form.location" />
-      </UiField>
-      <UiField label="Timezone" for="timezone">
-        <UiInput id="timezone" v-model="form.timezone" />
-      </UiField>
-    </div>
-
-    <UiField label="Venue address" for="venueAddress" optional>
-      <UiInput id="venueAddress" v-model="form.venueAddress" />
+    <UiField label="Location name" for="location" optional>
+      <UiInput id="location" v-model="form.location" />
     </UiField>
 
-    <UiField
-      label="Cover image URL"
-      for="coverImageUrl"
-      optional
-      :error="form.errors.coverImageUrl"
-    >
-      <UiInput
-        id="coverImageUrl"
-        v-model="form.coverImageUrl"
-        type="url"
-        :invalid="!!form.errors.coverImageUrl"
-      />
+    <UiField label="Public RSVP">
+      <UiCheckbox v-model="form.allowPublicRsvp">
+        Allow guests to RSVP from the invite link
+      </UiCheckbox>
     </UiField>
-
-    <div class="grid items-start gap-[18px] sm:grid-cols-2">
-      <UiField label="Status" for="status">
-        <UiSelect id="status" v-model="form.status">
-          <option value="draft">Draft</option>
-          <option value="published">Published</option>
-        </UiSelect>
-      </UiField>
-      <UiField label="Public RSVP">
-        <UiCheckbox v-model="form.allowPublicRsvp">
-          Allow guests to RSVP from the invite link
-        </UiCheckbox>
-      </UiField>
-    </div>
   </div>
 </template>

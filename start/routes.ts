@@ -35,6 +35,8 @@ router
 
     router.get('login', [controllers.Session, 'create']).as('session.create')
     router.post('login', [controllers.Session, 'store']).as('session.store')
+
+    router.post('auth/google', [controllers.Session, 'google']).as('session.google')
   })
   .use(middleware.guest())
 

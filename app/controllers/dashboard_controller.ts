@@ -21,7 +21,6 @@ export default class DashboardController {
       events: events.map((event) => ({
         id: event.id,
         title: event.title,
-        status: event.status,
         location: event.location,
         startsAt: event.startsAt?.toISO() ?? null,
         guestsCount: Number(event.$extras.guestsCount ?? 0),

@@ -13,6 +13,7 @@ export type ScannedRoutes = {
     'new_account.store': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
+    'session.google': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
     'events.create': { paramsTuple?: []; params?: {} }
@@ -86,6 +87,7 @@ export type ScannedRoutes = {
     'invite.rsvp': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'new_account.store': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
+    'session.google': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
     'events.store': { paramsTuple?: []; params?: {} }
     'guests.store': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }

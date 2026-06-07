@@ -20,8 +20,6 @@ test.group('Invite & check-in flow', (group) => {
       title: 'Launch Party',
       slug: `launch-${owner.id}`,
       startsAt: DateTime.now().plus({ days: 7 }),
-      timezone: 'UTC',
-      status: 'published',
       allowPublicRsvp: true,
     })
     const guest = await Guest.create({

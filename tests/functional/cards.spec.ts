@@ -42,7 +42,6 @@ test.group('Card designer & PDF', (group) => {
       title: 'Gala Dinner',
       slug: `gala-${owner.id}`,
       startsAt: DateTime.now().plus({ days: 14 }),
-      timezone: 'UTC',
     })
     const guest = await Guest.create({ eventId: event.id, name: 'Carl Card' })
     return { owner, event, guest }

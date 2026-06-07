@@ -15,9 +15,6 @@
     <meta property="og:title" content="You're invited to {{ event.title }}" />
     <meta property="og:description" content="{{ event.when || 'View the invitation and RSVP.' }}" />
     <meta property="og:url" content="{{ inviteUrl }}" />
-    @if(event.coverImageUrl)
-      <meta property="og:image" content="{{ event.coverImageUrl }}" />
-    @end
 
     <meta name="twitter:card" content="summary_large_image" />
 
@@ -381,11 +378,7 @@
   <body>
     <div class="page">
       <div class="card">
-        @if(event.coverImageUrl)
-          <div class="cover" style="background-image: url('{{ event.coverImageUrl }}')"></div>
-        @else
-          <div class="cover-fallback"><span class="mark"><i class="pi pi-ticket"></i></span></div>
-        @end
+        <div class="cover-fallback"><span class="mark"><i class="pi pi-ticket"></i></span></div>
 
         <div class="body">
           @if(flashMessages.has('success'))
@@ -417,12 +410,7 @@
             @if(event.location)
               <div class="meta-row">
                 <span class="mi"><i class="pi pi-map-marker"></i></span>
-                <span class="mt">
-                  {{ event.location }}
-                  @if(event.venueAddress)
-                    <span class="sub">{{ event.venueAddress }}</span>
-                  @end
-                </span>
+                <span class="mt">{{ event.location }}</span>
               </div>
             @end
           </div>

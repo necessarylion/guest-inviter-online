@@ -76,7 +76,6 @@ export class EmailSettingSchema extends BaseModel {
 export class EventSchema extends BaseModel {
   static $columns = [
     'allowPublicRsvp',
-    'coverImageUrl',
     'createdAt',
     'description',
     'endsAt',
@@ -84,18 +83,13 @@ export class EventSchema extends BaseModel {
     'location',
     'slug',
     'startsAt',
-    'status',
-    'timezone',
     'title',
     'updatedAt',
     'userId',
-    'venueAddress',
   ] as const
   $columns = EventSchema.$columns
   @column()
   declare allowPublicRsvp: boolean
-  @column()
-  declare coverImageUrl: string | null
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column()
@@ -111,17 +105,11 @@ export class EventSchema extends BaseModel {
   @column.dateTime()
   declare startsAt: DateTime
   @column()
-  declare status: string
-  @column()
-  declare timezone: string
-  @column()
   declare title: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column()
   declare userId: number
-  @column()
-  declare venueAddress: string | null
 }
 
 export class GuestSchema extends BaseModel {
@@ -236,18 +224,28 @@ export class TemplatePresetSchema extends BaseModel {
 }
 
 export class UserSchema extends BaseModel {
-  static $columns = ['createdAt', 'email', 'fullName', 'id', 'password', 'updatedAt'] as const
+  static $columns = [
+    'createdAt',
+    'email',
+    'firebaseUid',
+    'fullName',
+    'id',
+    'password',
+    'updatedAt',
+  ] as const
   $columns = UserSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column()
   declare email: string
   @column()
+  declare firebaseUid: string | null
+  @column()
   declare fullName: string | null
   @column({ isPrimary: true })
   declare id: number
   @column({ serializeAs: null })
-  declare password: string
+  declare password: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
 }

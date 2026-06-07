@@ -7,7 +7,6 @@ import { UiButton, UiEmpty, UiPageHeader } from '~/components/ui'
 type EventRow = {
   id: number
   title: string
-  status: string
   location: string | null
   startsAt: string | null
   guestsCount: number

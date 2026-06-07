@@ -60,6 +60,12 @@ const routes = {
     tokens: [{"old":"/login","type":0,"val":"login","end":""}],
     types: placeholder as Registry['session.store']['types'],
   },
+  'session.google': {
+    methods: ["POST"],
+    pattern: '/auth/google',
+    tokens: [{"old":"/auth/google","type":0,"val":"auth","end":""},{"old":"/auth/google","type":0,"val":"google","end":""}],
+    types: placeholder as Registry['session.google']['types'],
+  },
   'session.destroy': {
     methods: ["POST"],
     pattern: '/logout',

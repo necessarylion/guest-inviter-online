@@ -10,31 +10,23 @@ type EventData = {
   title: string
   description: string | null
   location: string | null
-  venueAddress: string | null
-  coverImageUrl: string | null
   startsAt: string | null
   endsAt: string | null
-  timezone: string
-  status: string
   allowPublicRsvp: boolean
 }
 
 const props = defineProps<{ event: EventData }>()
 
-function toLocalInput(iso: string | null, zone: string) {
-  return iso ? DateTime.fromISO(iso).setZone(zone).toFormat("yyyy-MM-dd'T'HH:mm") : ''
+function toLocalInput(iso: string | null) {
+  return iso ? DateTime.fromISO(iso).setZone('UTC').toFormat("yyyy-MM-dd'T'HH:mm") : ''
 }
 
 const form = useForm({
   title: props.event.title,
   description: props.event.description ?? '',
   location: props.event.location ?? '',
-  venueAddress: props.event.venueAddress ?? '',
-  coverImageUrl: props.event.coverImageUrl ?? '',
-  startsAt: toLocalInput(props.event.startsAt, props.event.timezone),
-  endsAt: toLocalInput(props.event.endsAt, props.event.timezone),
-  timezone: props.event.timezone,
-  status: props.event.status,
+  startsAt: toLocalInput(props.event.startsAt),
+  endsAt: toLocalInput(props.event.endsAt),
   allowPublicRsvp: props.event.allowPublicRsvp,
 })
 
@@ -44,8 +36,6 @@ function submit() {
       ...data,
       description: data.description || null,
       location: data.location || null,
-      venueAddress: data.venueAddress || null,
-      coverImageUrl: data.coverImageUrl || null,
       endsAt: data.endsAt || null,
     }))
     .put(`/events/${props.event.id}`)

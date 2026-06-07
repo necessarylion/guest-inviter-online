@@ -10,44 +10,44 @@ export type SizePreset = { key: string; label: string; dims?: [number, number] }
 
 export const SIZE_PRESETS: SizePreset[] = [
   // ===== Print =====
-  { key: '5x7', label: '5 × 7 in', dims: [127, 178] },
-  { key: '5x7Horizontal', label: '5 × 7 in Horizontal', dims: [178, 127] },
+  { key: '5x7', label: 'Invitation Card (5 × 7 in)', dims: [127, 178] },
+  { key: '5x7Horizontal', label: 'Invitation Card — Wide (7 × 5 in)', dims: [178, 127] },
 
-  { key: 'a6', label: 'A6', dims: [105, 148] },
-  { key: 'a6Horizontal', label: 'A6 Horizontal', dims: [148, 105] },
+  { key: 'a6', label: 'Postcard (A6)', dims: [105, 148] },
+  { key: 'a6Horizontal', label: 'Postcard — Wide (A6)', dims: [148, 105] },
 
-  { key: 'dl', label: 'DL', dims: [99, 210] },
-  { key: 'dlHorizontal', label: 'DL Horizontal', dims: [210, 99] },
+  { key: 'dl', label: 'Tall Card (DL)', dims: [99, 210] },
+  { key: 'dlHorizontal', label: 'Tall Card — Wide (DL)', dims: [210, 99] },
 
-  { key: '5x5', label: '5 × 5 in', dims: [127, 127] },
+  { key: '5x5', label: 'Square Card (5 × 5 in)', dims: [127, 127] },
 
   // ===== Instagram =====
-  { key: 'instagramPost', label: 'Instagram Post (1:1)', dims: [127, 127] },
-  { key: 'instagramPortrait', label: 'Instagram Portrait (4:5)', dims: [127, 159] },
-  { key: 'instagramStory', label: 'Instagram Story (9:16)', dims: [108, 192] },
+  { key: 'instagramPost', label: 'Instagram Post (Square)', dims: [127, 127] },
+  { key: 'instagramPortrait', label: 'Instagram Post (Tall)', dims: [127, 159] },
+  { key: 'instagramStory', label: 'Instagram Story', dims: [108, 192] },
 
   // ===== Facebook =====
-  { key: 'facebookPost', label: 'Facebook Post (1:1)', dims: [127, 127] },
-  { key: 'facebookCover', label: 'Facebook Cover', dims: [210, 80] },
-  { key: 'facebookStory', label: 'Facebook Story (9:16)', dims: [108, 192] },
+  { key: 'facebookPost', label: 'Facebook Post (Square)', dims: [127, 127] },
+  { key: 'facebookCover', label: 'Facebook Cover Photo', dims: [210, 80] },
+  { key: 'facebookStory', label: 'Facebook Story', dims: [108, 192] },
 
   // ===== TikTok =====
-  { key: 'tiktokVideo', label: 'TikTok Video (9:16)', dims: [108, 192] },
+  { key: 'tiktokVideo', label: 'TikTok Video', dims: [108, 192] },
 
   // ===== Generic Digital =====
-  { key: 'square', label: 'Square (1:1)', dims: [127, 127] },
-  { key: 'portrait', label: 'Portrait (4:5)', dims: [127, 159] },
-  { key: 'story', label: 'Story / Reel / TikTok (9:16)', dims: [108, 192] },
+  { key: 'square', label: 'Square', dims: [127, 127] },
+  { key: 'portrait', label: 'Portrait (Tall)', dims: [127, 159] },
+  { key: 'story', label: 'Story / Reel', dims: [108, 192] },
 
   // ===== Common Digital Formats =====
-  { key: 'landscape', label: 'Landscape (16:9)', dims: [192, 108] },
-  { key: 'youtubeThumbnail', label: 'YouTube Thumbnail (16:9)', dims: [192, 108] },
+  { key: 'landscape', label: 'Landscape (Wide)', dims: [192, 108] },
+  { key: 'youtubeThumbnail', label: 'YouTube Thumbnail', dims: [192, 108] },
 
   // ===== Event & Flyer =====
   { key: 'flyer', label: 'Flyer (A5)', dims: [148, 210] },
-  { key: 'flyerHorizontal', label: 'Flyer (A5 Horizontal)', dims: [210, 148] },
+  { key: 'flyerHorizontal', label: 'Flyer — Wide (A5)', dims: [210, 148] },
 
-  { key: 'custom', label: 'Custom' },
+  { key: 'custom', label: 'Custom Size…' },
 ]
 
 /** Preset key → [width, height] in mm, for sizes that have fixed dimensions. */

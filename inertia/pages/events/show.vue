@@ -35,10 +35,8 @@ type GuestRow = {
 type EventData = {
   id: number
   title: string
-  status: string
   location: string | null
   startsAt: string | null
-  timezone: string
 }
 type Stats = { total: number; confirmed: number; declined: number; checkedIn: number }
 
@@ -123,9 +121,7 @@ function deleteEvent() {
 }
 
 function formatDate(iso: string | null) {
-  return iso
-    ? DateTime.fromISO(iso).setZone(props.event.timezone).toFormat('cccc, dd LLL yyyy • t')
-    : 'Date TBD'
+  return iso ? DateTime.fromISO(iso).setZone('UTC').toFormat('cccc, dd LLL yyyy • t') : 'Date TBD'
 }
 
 const rsvpVariant = (s: string) =>

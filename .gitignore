@@ -10,6 +10,7 @@ tmp/*
 .env.production
 .env.production.local
 .env.development.local
+*-firebase-adminsdk*.json
 
 # Frontend assets compiled code
 public/assets

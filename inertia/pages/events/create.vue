@@ -4,18 +4,12 @@ import { Link } from '@adonisjs/inertia/vue'
 import EventFields from '~/components/event_fields.vue'
 import { UiButton, UiCard, UiPageHeader } from '~/components/ui'
 
-const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'
-
 const form = useForm({
   title: '',
   description: '',
   location: '',
-  venueAddress: '',
-  coverImageUrl: '',
   startsAt: '',
   endsAt: '',
-  timezone,
-  status: 'draft',
   allowPublicRsvp: true,
 })
 
@@ -25,8 +19,6 @@ function submit() {
       ...data,
       description: data.description || null,
       location: data.location || null,
-      venueAddress: data.venueAddress || null,
-      coverImageUrl: data.coverImageUrl || null,
       endsAt: data.endsAt || null,
     }))
     .post('/events')

@@ -45,7 +45,6 @@ test.group('Events & guests', (group) => {
       title: 'Birthday Bash',
       slug: `bday-${owner.id}`,
       startsAt: DateTime.now().plus({ days: 3 }),
-      timezone: 'UTC',
     })
 
     const response = await client
@@ -72,7 +71,6 @@ test.group('Events & guests', (group) => {
       title: 'Private Gala',
       slug: `gala-${owner.id}`,
       startsAt: DateTime.now().plus({ days: 5 }),
-      timezone: 'UTC',
     })
 
     const response = await client
@@ -89,7 +87,6 @@ test.group('Events & guests', (group) => {
       title: 'Reunion',
       slug: `reunion-${owner.id}`,
       startsAt: DateTime.now().plus({ days: 10 }),
-      timezone: 'UTC',
       allowPublicRsvp: true,
     })
     const guest = await Guest.create({ eventId: event.id, name: 'Rita RSVP' })
