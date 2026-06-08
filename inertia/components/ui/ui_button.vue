@@ -1,3 +1,7 @@
+<script lang="ts">
+export default { inheritAttrs: false }
+</script>
+
 <script setup lang="ts">
 import { computed } from 'vue'
 
@@ -38,12 +42,18 @@ const classes = computed(() => [
 </script>
 
 <template>
-  <a v-if="href" :href="href" :class="classes" :aria-disabled="disabled || undefined">
+  <a
+    v-if="href"
+    v-bind="$attrs"
+    :href="href"
+    :class="classes"
+    :aria-disabled="disabled || undefined"
+  >
     <span v-if="loading" class="spin" />
     <i v-else-if="icon" :class="['pi', icon]" />
     <slot />
   </a>
-  <button v-else :type="type" :class="classes" :disabled="disabled || loading">
+  <button v-else v-bind="$attrs" :type="type" :class="classes" :disabled="disabled || loading">
     <span v-if="loading" class="spin" />
     <i v-else-if="icon" :class="['pi', icon]" />
     <slot />

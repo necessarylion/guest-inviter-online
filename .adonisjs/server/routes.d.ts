@@ -8,6 +8,7 @@ export type ScannedRoutes = {
     'pages.robots': { paramsTuple?: []; params?: {} }
     'pages.sitemap': { paramsTuple?: []; params?: {} }
     'invite.show': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
+    'invite.card': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'invite.rsvp': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'new_account.store': { paramsTuple?: []; params?: {} }
@@ -30,6 +31,7 @@ export type ScannedRoutes = {
     'invitations.emailAll': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
     'checkins.scan': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
     'checkins.verify': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'checkins.manual': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'id': ParamValue} }
     'cards.design': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
     'cards.save': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
     'cards.autosave': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
@@ -52,6 +54,7 @@ export type ScannedRoutes = {
     'pages.robots': { paramsTuple?: []; params?: {} }
     'pages.sitemap': { paramsTuple?: []; params?: {} }
     'invite.show': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
+    'invite.card': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
@@ -71,6 +74,7 @@ export type ScannedRoutes = {
     'pages.robots': { paramsTuple?: []; params?: {} }
     'pages.sitemap': { paramsTuple?: []; params?: {} }
     'invite.show': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
+    'invite.card': { paramsTuple: [ParamValue]; params: {'token': ParamValue} }
     'new_account.create': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
     'dashboard': { paramsTuple?: []; params?: {} }
@@ -97,6 +101,7 @@ export type ScannedRoutes = {
     'invitations.email': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'guestId': ParamValue} }
     'invitations.emailAll': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
     'checkins.verify': { paramsTuple: [ParamValue]; params: {'eventId': ParamValue} }
+    'checkins.manual': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'id': ParamValue} }
     'cards.email': { paramsTuple: [ParamValue,ParamValue]; params: {'eventId': ParamValue,'guestId': ParamValue} }
     'email_settings.test': { paramsTuple?: []; params?: {} }
     'admin.templates.store': { paramsTuple?: []; params?: {} }

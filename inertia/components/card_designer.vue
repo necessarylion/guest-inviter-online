@@ -24,7 +24,7 @@ import {
 } from '@pdfme/schemas'
 import { onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import type { Template } from '@pdfme/common'
-import { UiButton } from '~/components/ui'
+import { UiButton, UiTooltip } from '~/components/ui'
 import { useTheme } from '~/composables/use_theme'
 import { SIZE_PRESETS, SIZE_DIMENSIONS, DEFAULT_SIZE_PRESET } from '~/constants/card_sizes'
 
@@ -156,12 +156,16 @@ function scheduleAutosave() {
  * token overrides; light mode just seeds the primary and uses pdfme's default.
  */
 function pdfmeTheme() {
-  const colorPrimary = getComputedStyle(document.documentElement)
-    .getPropertyValue('--accent-500')
-    .trim()
-  const token = colorPrimary ? { colorPrimary } : {}
+  const root = getComputedStyle(document.documentElement)
+  const colorPrimary = root.getPropertyValue('--accent-500').trim()
+  // Match the editor chrome to the app's UI font (Inter) instead of antd's default stack.
+  const fontFamily = root.getPropertyValue('--font-sans').trim()
+  const token: Record<string, string> = {}
+  if (colorPrimary) token.colorPrimary = colorPrimary
+  if (fontFamily) token.fontFamily = fontFamily
   if (isDark.value) {
-    return { token: antdTheme.getDesignToken({ algorithm: antdTheme.darkAlgorithm, token }) }
+    const dark = antdTheme.getDesignToken({ algorithm: antdTheme.darkAlgorithm, token })
+    return { token: dark as unknown as Record<string, unknown> }
   }
   return { token }
 }
@@ -598,14 +602,15 @@ defineExpose({ applyTemplate, getTemplate })
           <input type="file" accept="application/pdf,.pdf" class="hidden" @change="onReplacePdf" />
         </label>
 
-        <UiButton
-          class="h-9"
-          variant="secondary"
-          icon="pi-download"
-          title="Download template (.json)"
-          aria-label="Download template"
-          @click="download"
-        />
+        <UiTooltip label="Download template (.json)" placement="bottom">
+          <UiButton
+            class="h-9"
+            variant="secondary"
+            icon="pi-download"
+            aria-label="Download template"
+            @click="download"
+          />
+        </UiTooltip>
 
         <UiButton class="h-9" :loading="saving" icon="pi-save" @click="save">Save design</UiButton>
       </div>

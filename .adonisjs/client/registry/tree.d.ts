@@ -9,6 +9,7 @@ export interface ApiDefinition {
   }
   invite: {
     show: typeof routes['invite.show']
+    card: typeof routes['invite.card']
     rsvp: typeof routes['invite.rsvp']
   }
   newAccount: {
@@ -43,6 +44,7 @@ export interface ApiDefinition {
   checkins: {
     scan: typeof routes['checkins.scan']
     verify: typeof routes['checkins.verify']
+    manual: typeof routes['checkins.manual']
   }
   cards: {
     design: typeof routes['cards.design']

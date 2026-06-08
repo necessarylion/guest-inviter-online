@@ -30,6 +30,12 @@ const routes = {
     tokens: [{"old":"/i/:token","type":0,"val":"i","end":""},{"old":"/i/:token","type":1,"val":"token","end":""}],
     types: placeholder as Registry['invite.show']['types'],
   },
+  'invite.card': {
+    methods: ["GET","HEAD"],
+    pattern: '/i/:token/card',
+    tokens: [{"old":"/i/:token/card","type":0,"val":"i","end":""},{"old":"/i/:token/card","type":1,"val":"token","end":""},{"old":"/i/:token/card","type":0,"val":"card","end":""}],
+    types: placeholder as Registry['invite.card']['types'],
+  },
   'invite.rsvp': {
     methods: ["POST"],
     pattern: '/i/:token/rsvp',
@@ -161,6 +167,12 @@ const routes = {
     pattern: '/events/:eventId/check-in',
     tokens: [{"old":"/events/:eventId/check-in","type":0,"val":"events","end":""},{"old":"/events/:eventId/check-in","type":1,"val":"eventId","end":""},{"old":"/events/:eventId/check-in","type":0,"val":"check-in","end":""}],
     types: placeholder as Registry['checkins.verify']['types'],
+  },
+  'checkins.manual': {
+    methods: ["POST"],
+    pattern: '/events/:eventId/guests/:id/check-in',
+    tokens: [{"old":"/events/:eventId/guests/:id/check-in","type":0,"val":"events","end":""},{"old":"/events/:eventId/guests/:id/check-in","type":1,"val":"eventId","end":""},{"old":"/events/:eventId/guests/:id/check-in","type":0,"val":"guests","end":""},{"old":"/events/:eventId/guests/:id/check-in","type":1,"val":"id","end":""},{"old":"/events/:eventId/guests/:id/check-in","type":0,"val":"check-in","end":""}],
+    types: placeholder as Registry['checkins.manual']['types'],
   },
   'cards.design': {
     methods: ["GET","HEAD"],

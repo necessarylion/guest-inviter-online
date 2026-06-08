@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { DateTime } from 'luxon'
 import { toast } from 'vue-sonner'
 import { Head, router, useForm } from '@inertiajs/vue3'
@@ -14,6 +14,7 @@ import {
   UiStat,
   UiAvatar,
   UiPageHeader,
+  UiTooltip,
 } from '~/components/ui'
 import { useCardImage } from '~/composables/use_card_image'
 
@@ -42,9 +43,21 @@ type Stats = { total: number; confirmed: number; declined: number; checkedIn: nu
 
 const props = defineProps<{ event: EventData; guests: GuestRow[]; stats: Stats }>()
 
+const search = ref('')
+const filteredGuests = computed(() => {
+  const q = search.value.trim().toLowerCase()
+  if (!q) return props.guests
+  return props.guests.filter((g) =>
+    [g.name, g.email, g.phone].some((field) => field?.toLowerCase().includes(q))
+  )
+})
+
 const copiedId = ref<number | null>(null)
 const downloadingId = ref<number | null>(null)
-const { downloadCardImage } = useCardImage()
+const sharingId = ref<number | null>(null)
+const checkingInId = ref<number | null>(null)
+const { renderCardImage, downloadCardImage } = useCardImage()
+const canShareFiles = typeof navigator !== 'undefined' && !!navigator.canShare && !!navigator.share
 
 const addOpen = ref(false)
 const guestForm = useForm<{ guests: GuestDraft[] }>({ guests: [emptyRow()] })
@@ -108,6 +121,54 @@ async function downloadCard(guest: GuestRow) {
   } finally {
     downloadingId.value = null
   }
+}
+
+async function shareCard(guest: GuestRow) {
+  if (sharingId.value) return
+  sharingId.value = guest.id
+  try {
+    const blob = await renderCardImage(`/events/${props.event.id}/guests/${guest.id}/card.pdf`)
+    const file = new File(
+      [blob],
+      `invitation-${guest.name.replace(/\s+/g, '-').toLowerCase()}.png`,
+      { type: 'image/png' }
+    )
+    let text = `You are invited to ${props.event.title}`
+    if (guest.inviteUrl) text += `\n${guest.inviteUrl}`
+
+    if (canShareFiles && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], text })
+    } else {
+      // Fallback for browsers without file-share support: download the card.
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = file.name
+      link.click()
+      URL.revokeObjectURL(url)
+      toast.success('Sharing not supported here — card downloaded instead.')
+    }
+  } catch (err) {
+    // Ignore user-cancelled shares; surface real failures.
+    if ((err as Error)?.name !== 'AbortError') {
+      toast.error('Could not share the invitation.')
+    }
+  } finally {
+    sharingId.value = null
+  }
+}
+
+function toggleCheckIn(guest: GuestRow) {
+  if (checkingInId.value) return
+  checkingInId.value = guest.id
+  router.post(
+    `/events/${props.event.id}/guests/${guest.id}/check-in`,
+    {},
+    {
+      preserveScroll: true,
+      onFinish: () => (checkingInId.value = null),
+    }
+  )
 }
 
 function removeGuest(guest: GuestRow) {
@@ -228,10 +289,18 @@ const rsvpVariant = (s: string) =>
   </UiModal>
 
   <!-- guest list -->
-  <h2 class="mb-3.5 mt-8 text-[22px] font-extrabold tracking-tight text-ink">Guest list</h2>
+  <div class="mb-3.5 mt-8 flex flex-wrap items-center justify-between gap-3">
+    <h2 class="text-[22px] font-extrabold tracking-tight text-ink">Guest list</h2>
+    <div v-if="guests.length" class="relative w-full sm:w-72">
+      <i
+        class="pi pi-search pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted"
+      />
+      <UiInput v-model="search" class="pl-9!" placeholder="Search by name, email, or phone" />
+    </div>
+  </div>
 
   <div
-    v-if="guests.length"
+    v-if="filteredGuests.length"
     class="hidden overflow-x-auto rounded-card border border-line bg-surface md:block"
   >
     <table class="w-full border-collapse text-left">
@@ -247,7 +316,11 @@ const rsvpVariant = (s: string) =>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="guest in guests" :key="guest.id" class="border-b border-line last:border-b-0">
+        <tr
+          v-for="guest in filteredGuests"
+          :key="guest.id"
+          class="border-b border-line last:border-b-0"
+        >
           <td class="px-5 py-3.5">
             <div class="flex items-center gap-3">
               <UiAvatar :name="guest.name" />
@@ -265,29 +338,61 @@ const rsvpVariant = (s: string) =>
           </td>
 
           <td class="px-5 py-3.5">
-            <UiBadge v-if="guest.isCheckedIn" variant="success" icon="pi-check">Checked in</UiBadge>
-            <UiBadge v-else variant="muted">Not yet</UiBadge>
+            <div class="flex items-center gap-2">
+              <UiBadge v-if="guest.isCheckedIn" variant="success" icon="pi-check"
+                >Checked in</UiBadge
+              >
+              <UiBadge v-else variant="muted">Not yet</UiBadge>
+              <UiTooltip :label="guest.isCheckedIn ? 'Undo check-in' : 'Check in'">
+                <UiButton
+                  variant="secondary"
+                  size="sm"
+                  :aria-label="guest.isCheckedIn ? 'Undo check-in' : 'Check in'"
+                  :icon="
+                    checkingInId === guest.id
+                      ? 'pi-spinner pi-spin'
+                      : guest.isCheckedIn
+                        ? 'pi-replay'
+                        : 'pi-check-circle'
+                  "
+                  :disabled="checkingInId === guest.id"
+                  @click="toggleCheckIn(guest)"
+                />
+              </UiTooltip>
+            </div>
           </td>
 
           <td class="px-5 py-3.5">
             <div class="flex items-center justify-end gap-2 whitespace-nowrap">
-              <UiButton
-                variant="secondary"
-                size="sm"
-                :icon="copiedId === guest.id ? 'pi-check' : 'pi-link'"
-                @click="copyLink(guest)"
-              >
-                {{ copiedId === guest.id ? 'Copied' : 'Copy link' }}
-              </UiButton>
-              <UiButton
-                variant="secondary"
-                size="sm"
-                :icon="downloadingId === guest.id ? 'pi-spinner pi-spin' : 'pi-image'"
-                :disabled="downloadingId === guest.id"
-                @click="downloadCard(guest)"
-              >
-                Invitation
-              </UiButton>
+              <UiTooltip :label="copiedId === guest.id ? 'Copied' : 'Copy link'">
+                <UiButton
+                  variant="secondary"
+                  size="sm"
+                  :aria-label="copiedId === guest.id ? 'Copied' : 'Copy link'"
+                  :icon="copiedId === guest.id ? 'pi-check' : 'pi-link'"
+                  @click="copyLink(guest)"
+                />
+              </UiTooltip>
+              <UiTooltip label="Download invitation">
+                <UiButton
+                  variant="secondary"
+                  size="sm"
+                  aria-label="Download invitation"
+                  :icon="downloadingId === guest.id ? 'pi-spinner pi-spin' : 'pi-download'"
+                  :disabled="downloadingId === guest.id"
+                  @click="downloadCard(guest)"
+                />
+              </UiTooltip>
+              <UiTooltip label="Share invitation">
+                <UiButton
+                  variant="secondary"
+                  size="sm"
+                  aria-label="Share invitation"
+                  :icon="sharingId === guest.id ? 'pi-spinner pi-spin' : 'pi-share-alt'"
+                  :disabled="sharingId === guest.id"
+                  @click="shareCard(guest)"
+                />
+              </UiTooltip>
               <UiButton
                 v-if="guest.email"
                 variant="secondary"
@@ -307,9 +412,9 @@ const rsvpVariant = (s: string) =>
   </div>
 
   <!-- guest list (mobile cards) -->
-  <div v-if="guests.length" class="flex flex-col gap-3 md:hidden">
+  <div v-if="filteredGuests.length" class="flex flex-col gap-3 md:hidden">
     <div
-      v-for="guest in guests"
+      v-for="guest in filteredGuests"
       :key="guest.id"
       class="rounded-card border border-line bg-surface p-4"
     >
@@ -330,24 +435,54 @@ const rsvpVariant = (s: string) =>
 
       <div class="mt-3.5 grid grid-cols-2 gap-2 border-t border-line pt-3.5">
         <UiButton
-          variant="secondary"
+          :variant="guest.isCheckedIn ? 'secondary' : 'primary'"
           size="sm"
           block
-          :icon="copiedId === guest.id ? 'pi-check' : 'pi-link'"
-          @click="copyLink(guest)"
+          class="col-span-2"
+          :icon="
+            checkingInId === guest.id
+              ? 'pi-spinner pi-spin'
+              : guest.isCheckedIn
+                ? 'pi-replay'
+                : 'pi-check-circle'
+          "
+          :disabled="checkingInId === guest.id"
+          @click="toggleCheckIn(guest)"
         >
-          {{ copiedId === guest.id ? 'Copied' : 'Copy link' }}
+          {{ guest.isCheckedIn ? 'Undo check-in' : 'Check in' }}
         </UiButton>
-        <UiButton
-          variant="secondary"
-          size="sm"
-          block
-          :icon="downloadingId === guest.id ? 'pi-spinner pi-spin' : 'pi-image'"
-          :disabled="downloadingId === guest.id"
-          @click="downloadCard(guest)"
-        >
-          Invitation
-        </UiButton>
+        <UiTooltip block :label="copiedId === guest.id ? 'Copied' : 'Copy link'">
+          <UiButton
+            variant="secondary"
+            size="sm"
+            block
+            :aria-label="copiedId === guest.id ? 'Copied' : 'Copy link'"
+            :icon="copiedId === guest.id ? 'pi-check' : 'pi-link'"
+            @click="copyLink(guest)"
+          />
+        </UiTooltip>
+        <UiTooltip block label="Download invitation">
+          <UiButton
+            variant="secondary"
+            size="sm"
+            block
+            aria-label="Download invitation"
+            :icon="downloadingId === guest.id ? 'pi-spinner pi-spin' : 'pi-download'"
+            :disabled="downloadingId === guest.id"
+            @click="downloadCard(guest)"
+          />
+        </UiTooltip>
+        <UiTooltip block label="Share invitation">
+          <UiButton
+            variant="secondary"
+            size="sm"
+            block
+            aria-label="Share invitation"
+            :icon="sharingId === guest.id ? 'pi-spinner pi-spin' : 'pi-share-alt'"
+            :disabled="sharingId === guest.id"
+            @click="shareCard(guest)"
+          />
+        </UiTooltip>
         <UiButton
           v-if="guest.email"
           variant="secondary"
@@ -357,12 +492,7 @@ const rsvpVariant = (s: string) =>
           @click="sendEmail(guest)"
           >Email</UiButton
         >
-        <UiButton
-          variant="danger-ghost"
-          size="sm"
-          block
-          icon="pi-trash"
-          @click="removeGuest(guest)"
+        <UiButton variant="danger-ghost" size="sm" block icon="pi-trash" @click="removeGuest(guest)"
           >Remove</UiButton
         >
       </div>
@@ -370,6 +500,7 @@ const rsvpVariant = (s: string) =>
   </div>
 
   <UiCard v-else>
-    <p class="py-6 text-center text-muted">No guests yet. Add your first guest above.</p>
+    <p v-if="guests.length" class="py-6 text-center text-muted">No guests match “{{ search }}”.</p>
+    <p v-else class="py-6 text-center text-muted">No guests yet. Add your first guest above.</p>
   </UiCard>
 </template>

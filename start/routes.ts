@@ -21,6 +21,7 @@ router.get('/robots.txt', [controllers.Pages, 'robots'])
 router.get('/sitemap.xml', [controllers.Pages, 'sitemap'])
 
 router.get('/i/:token', [controllers.Invite, 'show']).as('invite.show')
+router.get('/i/:token/card', [controllers.Invite, 'card']).as('invite.card')
 router.post('/i/:token/rsvp', [controllers.Invite, 'rsvp']).as('invite.rsvp')
 
 /*
@@ -86,6 +87,9 @@ router
      */
     router.get('events/:eventId/scan', [controllers.CheckIns, 'scan']).as('checkins.scan')
     router.post('events/:eventId/check-in', [controllers.CheckIns, 'verify']).as('checkins.verify')
+    router
+      .post('events/:eventId/guests/:id/check-in', [controllers.CheckIns, 'manual'])
+      .as('checkins.manual')
 
     /**
      * Invitation card designer + per-guest card. The download serves a PDF and

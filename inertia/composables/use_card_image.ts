@@ -11,10 +11,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = workerUrl
  */
 export function useCardImage() {
   /**
-   * Fetch a card PDF, render its first page to a PNG, and download it.
+   * Fetch a card PDF and rasterize its first page to a PNG blob.
    * `scale` trades file size for sharpness (3 ≈ ~216 DPI for an A6 card).
    */
-  async function downloadCardImage(pdfUrl: string, filename: string, scale = 3) {
+  async function renderCardImage(pdfUrl: string, scale = 3): Promise<Blob> {
     const res = await fetch(pdfUrl, { headers: { Accept: 'application/pdf' } })
     if (!res.ok) throw new Error(`Failed to load card (${res.status})`)
 
@@ -31,23 +31,27 @@ export function useCardImage() {
 
       await page.render({ canvas, canvasContext: context, viewport }).promise
 
-      const blob = await new Promise<Blob>((resolve, reject) =>
+      return await new Promise<Blob>((resolve, reject) =>
         canvas.toBlob(
           (b) => (b ? resolve(b) : reject(new Error('Could not encode PNG'))),
           'image/png'
         )
       )
-
-      const url = URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = filename
-      link.click()
-      URL.revokeObjectURL(url)
     } finally {
       await pdf.destroy()
     }
   }
 
-  return { downloadCardImage }
+  /** Fetch a card PDF, render its first page to a PNG, and download it. */
+  async function downloadCardImage(pdfUrl: string, filename: string, scale = 3) {
+    const blob = await renderCardImage(pdfUrl, scale)
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = filename
+    link.click()
+    URL.revokeObjectURL(url)
+  }
+
+  return { renderCardImage, downloadCardImage }
 }

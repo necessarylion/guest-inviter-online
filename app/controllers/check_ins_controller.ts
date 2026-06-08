@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
 import Event from '#models/event'
+import Guest from '#models/guest'
 import Invitation from '#models/invitation'
 import invitationService from '#services/invitation_service'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -68,6 +69,38 @@ export default class CheckInsController {
     await guest.save()
 
     return response.json({ status: 'ok', guest: guestData, checkedInAt: guest.checkedInAt })
+  }
+
+  /**
+   * Manually toggle a guest's check-in from the guest list (organizer only).
+   * Checks the guest in if they aren't yet, or undoes the check-in otherwise —
+   * letting the owner correct mistakes without the scanner.
+   */
+  async manual({ params, auth, response, session }: HttpContext) {
+    const user = auth.user!
+    const event = await this.findOwnedEvent(user.id, params.eventId)
+    if (!event) {
+      return response.notFound('Event not found')
+    }
+
+    const guest = await Guest.query().where('id', params.id).where('eventId', event.id).first()
+    if (!guest) {
+      return response.notFound('Guest not found')
+    }
+
+    if (guest.checkedInAt) {
+      guest.checkedInAt = null
+      guest.checkedInById = null
+      await guest.save()
+      session.flash('success', `${guest.name} checked out.`)
+    } else {
+      guest.checkedInAt = DateTime.now()
+      guest.checkedInById = user.id
+      await guest.save()
+      session.flash('success', `${guest.name} checked in.`)
+    }
+
+    return response.redirect().back()
   }
 
   private findOwnedEvent(userId: number, eventId: number | string) {

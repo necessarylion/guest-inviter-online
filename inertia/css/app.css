@@ -369,21 +369,42 @@
  * (e.g. `.fr-header-title { color: #000000e0 }`), so the container colour above
  * can't reach them — override the lot. These label the collapsible groups
  * ("Border Width", "Padding", …). */
-[data-theme='dark'] .pdfme-designer-right-sidebar :is(.fr-header-title, .fr-obj-line-title, .fr-void-title) {
+[data-theme='dark']
+  .pdfme-designer-right-sidebar
+  :is(.fr-header-title, .fr-obj-line-title, .fr-void-title) {
   color: var(--ink) !important;
 }
 [data-theme='dark'] .pdfme-designer-right-sidebar :is(.fr-desc, .fr-header-desc) {
   color: var(--ink-3) !important;
 }
-[data-theme='dark'] .pdfme-designer-right-sidebar :is(.ant-input, .ant-input-number, .ant-input-number-input, .ant-input-affix-wrapper, .ant-select-selector) {
+[data-theme='dark']
+  .pdfme-designer-right-sidebar
+  :is(
+    .ant-input,
+    .ant-input-number,
+    .ant-input-number-input,
+    .ant-input-affix-wrapper,
+    .ant-select-selector
+  ) {
   background-color: var(--field-bg) !important;
   border-color: var(--field-border) !important;
   color: var(--field-text) !important;
 }
-[data-theme='dark'] .pdfme-designer-right-sidebar :is(.ant-input::placeholder, .ant-input-number-input::placeholder) {
+[data-theme='dark']
+  .pdfme-designer-right-sidebar
+  :is(.ant-input::placeholder, .ant-input-number-input::placeholder) {
   color: var(--field-placeholder) !important;
 }
-[data-theme='dark'] .pdfme-designer-right-sidebar :is(.ant-form-item-label > label, .ant-select-selection-item, .ant-select-selection-placeholder, .ant-select-arrow, .ant-typography, .ant-input-number-handler-inner) {
+[data-theme='dark']
+  .pdfme-designer-right-sidebar
+  :is(
+    .ant-form-item-label > label,
+    .ant-select-selection-item,
+    .ant-select-selection-placeholder,
+    .ant-select-arrow,
+    .ant-typography,
+    .ant-input-number-handler-inner
+  ) {
   color: var(--ink-2) !important;
 }
 [data-theme='dark'] .pdfme-designer-right-sidebar .ant-input-number-handler-wrap {
@@ -410,7 +431,9 @@
 [data-theme='dark'] .ant-select-dropdown .ant-select-item {
   color: var(--ink-2) !important;
 }
-[data-theme='dark'] .ant-select-dropdown :is(.ant-select-item-option-active, .ant-select-item-option-selected) {
+[data-theme='dark']
+  .ant-select-dropdown
+  :is(.ant-select-item-option-active, .ant-select-item-option-selected) {
   background-color: var(--bg-2) !important;
   color: var(--ink) !important;
 }

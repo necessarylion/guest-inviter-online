@@ -55,6 +55,18 @@ export interface Registry {
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/invite_controller').default['show']>>>
     }
   }
+  'invite.card': {
+    methods: ["GET","HEAD"]
+    pattern: '/i/:token/card'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue]
+      params: { token: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/invite_controller').default['card']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/invite_controller').default['card']>>>
+    }
+  }
   'invite.rsvp': {
     methods: ["POST"]
     pattern: '/i/:token/rsvp'
@@ -317,6 +329,18 @@ export interface Registry {
       query: {}
       response: ExtractResponse<Awaited<ReturnType<import('#controllers/check_ins_controller').default['verify']>>>
       errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/check_ins_controller').default['verify']>>>
+    }
+  }
+  'checkins.manual': {
+    methods: ["POST"]
+    pattern: '/events/:eventId/guests/:id/check-in'
+    types: {
+      body: {}
+      paramsTuple: [ParamValue, ParamValue]
+      params: { eventId: ParamValue; id: ParamValue }
+      query: {}
+      response: ExtractResponse<Awaited<ReturnType<import('#controllers/check_ins_controller').default['manual']>>>
+      errorResponse: ExtractErrorResponse<Awaited<ReturnType<import('#controllers/check_ins_controller').default['manual']>>>
     }
   }
   'cards.design': {
