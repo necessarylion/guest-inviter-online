@@ -32,7 +32,7 @@ export default class RegistrationLinksController {
         isActive: isActive ?? true,
       })
       session.flash('success', 'Registration link created.')
-      return response.redirect().toRoute('events.show', { id: event.id })
+      return response.redirect().toRoute('events.settings', { id: event.id })
     }
 
     link.expiresAt = expiresAt ?? null
@@ -48,7 +48,7 @@ export default class RegistrationLinksController {
       'success',
       regenerate ? 'Registration link regenerated.' : 'Registration link updated.'
     )
-    return response.redirect().toRoute('events.show', { id: event.id })
+    return response.redirect().toRoute('events.settings', { id: event.id })
   }
 
   async destroy({ params, auth, response, session }: HttpContext) {
@@ -63,7 +63,7 @@ export default class RegistrationLinksController {
     }
 
     session.flash('success', 'Registration link removed.')
-    return response.redirect().toRoute('events.show', { id: event.id })
+    return response.redirect().toRoute('events.settings', { id: event.id })
   }
 
   private findOwnedEvent(userId: number, eventId: number | string) {

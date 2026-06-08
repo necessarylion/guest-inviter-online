@@ -101,9 +101,6 @@ function isActive(prefix: string) {
         </button>
 
         <template v-if="page.props.user">
-          <Link route="events.create" class="btn btn-primary btn-sm hidden sm:inline-flex">
-            <i class="pi pi-plus" /> New event
-          </Link>
           <UiMenu align="right">
             <template #trigger>
               <span
